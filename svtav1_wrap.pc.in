@@ -1,0 +1,11 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/@CMAKE_INSTALL_LIBDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+
+Name: svtav1_wrap
+Description: Thin low-latency C wrapper around libSvtAv1Enc
+Version: 1.0.0
+Libs: -L${libdir} -lsvtav1_wrap
+Cflags: -I${includedir}
+Requires: SvtAv1Enc
