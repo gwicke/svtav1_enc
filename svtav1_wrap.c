@@ -152,9 +152,17 @@ Av1Encoder *av1enc_open(const Av1EncConfig *cfg)
     sc->enc_mode            = cfg->enc_mode;
     sc->pred_structure      = LOW_DELAY;
     sc->look_ahead_distance = 0;    /* no lookahead; also implicitly disables TF */
-    sc->intra_refresh_type  = 1;    /* CRA open-GOP; closed GOP creates key frames /
+    sc->intra_refresh_type  = 2;    /* 1 = CRA open-GOP; closed GOP (2) creates key frames /
                                        enables seeking */
-    sc->intra_period_length = -1;   /* scene-cut driven IDRs only */
+    sc->intra_period_length = 48;   /* Limit period length to allow for
+                                       seeking. When configuring infinite GOP
+                                       size, the encoder will still produce
+                                       periodic IFRs to avoid quality
+                                       degradation, and for webcam use cases
+                                       it seems runs were rarely longer than
+                                       ~50 frames. Should be a multiple of 8
+                                       or 16, depending on encoding mode /
+                                       hierarchy level. */
     sc->tune =                0;    /* Visual Quality (subjective), not the default */
 
     sc->source_width            = cfg->width;

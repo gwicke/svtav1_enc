@@ -95,10 +95,8 @@ typedef struct {
      *   6 = maximum parallelism / highest memory use
      *
      * In low-delay mode only one picture can be processed at a time,
-     * so values above 0 have limited effect on throughput but will
+     * so values above 1 have limited effect on throughput but will
      * still affect memory allocation.
-     *
-     * Replaces the old logical_processors field removed in SVT-AV1 v2.0.
      */
     uint32_t parallelism;
 } Av1EncConfig;
