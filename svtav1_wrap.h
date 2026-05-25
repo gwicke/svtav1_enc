@@ -89,6 +89,11 @@ typedef struct {
     uint32_t enc_mode;
 
     /**
+     * Key / intra frame period; should be a multiple of 8 minus 1.
+     */
+    int32_t intra_period_length;
+
+    /**
      * Level of parallelism [0..6].
      *   0 = auto (let SVT-AV1 choose based on machine core count)
      *   1 = minimal parallelism / lowest memory use

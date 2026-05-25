@@ -126,7 +126,13 @@ void av1enc_config_default(Av1EncConfig *cfg)
     cfg->height       = 1080;
     cfg->crf          = 35;
     cfg->enc_mode     = 9;
-    cfg->parallelism  = 0;  /* auto */
+    /* Limit period length to allow for seeking. When configuring infinite GOP
+     * size, the encoder will still produce periodic IFRs to avoid quality
+     * degradation, and for webcam use cases it seems runs were rarely longer
+     * than ~50 frames. Should be a multiple of 8 or 16 minus 1, depending on
+     * encoding mode / hierarchy level. */
+    cfg->intra_period_length = 47;
+    cfg->parallelism  = 0;  /* 0=auto; limited benefit for frame-at-a-time */
 }
 
 Av1Encoder *av1enc_open(const Av1EncConfig *cfg)
@@ -151,18 +157,9 @@ Av1Encoder *av1enc_open(const Av1EncConfig *cfg)
     /* ---- Low-latency preset ---- */
     sc->enc_mode            = cfg->enc_mode;
     sc->pred_structure      = LOW_DELAY;
-    sc->look_ahead_distance = 0;    /* no lookahead; also implicitly disables TF */
-    sc->intra_refresh_type  = 2;    /* 1 = CRA open-GOP; closed GOP (2) creates key frames /
-                                       enables seeking */
-    sc->intra_period_length = 48;   /* Limit period length to allow for
-                                       seeking. When configuring infinite GOP
-                                       size, the encoder will still produce
-                                       periodic IFRs to avoid quality
-                                       degradation, and for webcam use cases
-                                       it seems runs were rarely longer than
-                                       ~50 frames. Should be a multiple of 8
-                                       or 16, depending on encoding mode /
-                                       hierarchy level. */
+    // sc->look_ahead_distance = 0;    /* no lookahead; also implicitly disables TF */
+    sc->intra_refresh_type  = 2;    /* 1 = CRA open-GOP; 2 = closed GOP */
+    sc->intra_period_length = cfg->intra_period_length;
     sc->tune =                0;    /* Visual Quality (subjective), not the default */
 
     sc->source_width            = cfg->width;
