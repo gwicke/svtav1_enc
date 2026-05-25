@@ -132,6 +132,7 @@ void av1enc_config_default(Av1EncConfig *cfg)
      * than ~50 frames. Should be a multiple of 8 or 16 minus 1, depending on
      * encoding mode / hierarchy level. */
     cfg->intra_period_length = 47;
+    cfg->film_grain_denoise_apply = 0;
     cfg->parallelism  = 0;  /* 0=auto; limited benefit for frame-at-a-time */
 }
 

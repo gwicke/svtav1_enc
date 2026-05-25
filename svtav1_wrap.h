@@ -94,6 +94,11 @@ typedef struct {
     int32_t intra_period_length;
 
     /**
+     * Denoise film grain
+     */
+    uint8_t film_grain_denoise_apply;
+
+    /**
      * Level of parallelism [0..6].
      *   0 = auto (let SVT-AV1 choose based on machine core count)
      *   1 = minimal parallelism / lowest memory use
