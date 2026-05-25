@@ -172,7 +172,7 @@ Av1Encoder *av1enc_open(const Av1EncConfig *cfg)
 
     sc->rate_control_mode       = SVT_AV1_RC_MODE_CQP_OR_CRF;
     if (cfg->film_grain_noise > 0) {
-        sc->film_grain_denoise_apply = 1
+        sc->film_grain_denoise_apply = 1;
         sc->film_grain_denoise_strength = cfg->film_grain_noise;
     }
     sc->qp                      = cfg->crf;

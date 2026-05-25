@@ -94,7 +94,7 @@ typedef struct {
     int32_t intra_period_length;
 
     /**
-     * Denoise / film grain level; default 0 / disabled.
+     * Denoise / film grain level; 0-50. Default 0 / disabled.
      */
     uint8_t film_grain_noise;
 
